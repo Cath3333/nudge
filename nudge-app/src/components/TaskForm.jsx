@@ -1,15 +1,36 @@
-// TaskForm.jsx
 import React, { useState } from 'react';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
+//TODO: add categories field where the user can select from PREEXISTING categories (e.g. academics)
+const TaskForm = ({ open, handleClose, addNewTask }) => {
+  const [taskDetails, setTaskDetails] = useState({
+    taskName: '',
+    time: '',
+    date: '',
+    location: '',
+    priority: false,
+    description: ''
+  });
 
-const TaskForm = ({ open, handleClose }) => {
-  const [taskName, setTaskName] = useState('');
+  const handleChange = (e) => {
+    const { name, value, checked, type } = e.target;
+    setTaskDetails({
+      ...taskDetails, //add onto task details for each answer
+      [name]: type === 'checkbox' ? checked : value
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    console.log(taskName);
-    handleClose(); // Close the dialog after submitting
+    addNewTask(taskDetails);
+    handleClose();
+    setTaskDetails({
+      taskName: '',
+      time: '',
+      date: '',
+      location: '',
+      priority: false,
+      description: ''
+    });
   };
 
   return (
@@ -20,26 +41,63 @@ const TaskForm = ({ open, handleClose }) => {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
+            name="taskName"
             label="Task Name"
             type="text"
             fullWidth
-            variant="standard"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
+            value={taskDetails.taskName}
+            onChange={handleChange}
           />
           <TextField
-            autoFocus
             margin="dense"
-            id="name"
+            name="time"
+            label="Time"
+            type="text"
+            fullWidth
+            value={taskDetails.time}
+            onChange={handleChange}
+            placeholder="08:00 AM"
+          />
+          <TextField
+            margin="dense"
+            name="date"
+            label="Date"
+            type="text"
+            fullWidth
+            value={taskDetails.date}
+            onChange={handleChange}
+            placeholder="12/25/2024"
+          />
+          <TextField
+            margin="dense"
+            name="location"
+            label="Location"
+            type="text"
+            fullWidth
+            value={taskDetails.location}
+            onChange={handleChange}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="priority"
+                checked={taskDetails.priority}
+                onChange={handleChange}
+              />
+            }
+            label="Priority"
+          />
+          <TextField
+            margin="dense"
+            name="description"
             label="Description"
             type="text"
             fullWidth
-            variant="standard"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
+            multiline
+            rows={3}
+            value={taskDetails.description}
+            onChange={handleChange}
           />
-         
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
