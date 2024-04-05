@@ -13,6 +13,9 @@ const Nudge = () => {
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
   };
+  const removeTask = (index) => {
+    setTasks(tasks.filter((_, taskIndex) => taskIndex !== index));
+  }
 
 //TODO: make this change reflect the ordering/display of tasks
   const toggleView = () => {
@@ -29,7 +32,7 @@ const Nudge = () => {
       <DateWelcome />
       <Box my={4} display="flex" justifyContent="center" alignItems="center" minHeight="200px">
         {tasks.length > 0 ? (
-          <StickyNote  tasks={tasks} />
+          <StickyNote  tasks={tasks} removeTask={removeTask} />
         ) : (
         <Typography variant="h6" color="textSecondary">
         all done for today!
