@@ -34,18 +34,16 @@ const Login = () => {
             body: JSON.stringify(userInfo),
         });
         if (response.ok) {
-          console.log(url.length);
           const data = await response.json();
-          localStorage.setItem('token', data.token);
+          localStorage.setItem('userId', data.userId); 
           console.log('Success:', data);
           navigate('/homepage');
-         
-          } else {
-            const errorMessage = await response.json();
-           setErrorMessage(`Failed: ${errorMessage.message}`);
-           setOpenDialog(true);
-            console.error('Failed:', errorMessage);
-          }
+      } else {
+          const errorData = await response.json();  
+          setErrorMessage(`Failed: ${errorData.message}`);
+          setOpenDialog(true);
+      }
+      
         } catch (error) {
           console.error('Error:', error);
            setErrorMessage(`Failed: ${errorMessage}`);
