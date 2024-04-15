@@ -10,10 +10,23 @@ const Nudge = () => {
   const [tasks, setTasks] = useState([]);
   const [categoryView, setCategoryView] = useState(true);
 
-  const addNewTask = (newTask) => {
-    const taskWithCompletion = { ...newTask, completed: false };
-    setTasks([...tasks, taskWithCompletion]);
-  };
+  const addNewTask = async (newTask) => {
+    try {
+        const response = await fetch('http://localhost:8000/add-task', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newTask),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message);
+        setTasks([...tasks, { ...newTask, id: data.insertedId }]); 
+        console.log("Adding new task:", newTask); 
+    } catch (error) {
+        console.error('Failed to add new task:', error);
+    }
+};
   const toggleCompletion = (index) => {
     const updatedTasks = tasks.map((task, taskIndex) => {
       if (taskIndex === index) {

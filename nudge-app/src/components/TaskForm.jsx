@@ -14,24 +14,30 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
     setTaskDetails({
-      ...taskDetails, //add onto task details for each answer
+      ...taskDetails, 
       [name]: type === 'checkbox' ? checked : value
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log('Form submitted');
     e.preventDefault();
-    addNewTask(taskDetails);
+    const taskData = { 
+      userId: localStorage.getItem('userId'), 
+      name: taskDetails.taskName, 
+      description: taskDetails.description,
+      date: taskDetails.date,
+      time: taskDetails.time,
+      priority: taskDetails.priority,
+      location: taskDetails.location,
+      completed: false
+      
+    };
+    addNewTask(taskData);
+    console.log(taskData);
     handleClose();
-    setTaskDetails({
-      taskName: '',
-      time: '',
-      date: '',
-      location: '',
-      priority: false,
-      description: ''
-    });
-  };
+};
+
 
   return (
     <Dialog open={open} onClose={handleClose}>
