@@ -37,34 +37,34 @@ const Nudge = () => {
     setTasks(updatedTasks);
   };
 
+  const removeTask = (index) => {
+    setTasks(tasks.filter((_, i) => i !== index));  // Remove task by index
+};
+
 //TODO: make this change reflect the ordering/display of tasks
   const toggleView = () => {
     setCategoryView(!categoryView);
   };
 
-  const completedTasksCount = tasks.filter(task => task.completed).length;
-const totalTasksCount = tasks.length;
-const fillPercentage = totalTasksCount === 0 ? 0 : (completedTasksCount / totalTasksCount) * 100;
-
   //TODO: allow user to check off tasks (need some way to decrease tasks.length)
   return (
     <Container>
-      <Box display="flex" justifyContent="space-between" alignItems="center" my={2}>
-        <AddTask onAddTask={addNewTask} />
-        <ToggleTimeCategory view={categoryView} onToggleView={toggleView} />
-      </Box>
-      <DateWelcome />
-      <Box my={4} display="flex" justifyContent="center" alignItems="center" minHeight="200px">
-  {tasks.length > 0 ? (
-    <StickyNote tasks={tasks} toggleCompletion={toggleCompletion} />
-  ) : (
-    <Typography variant="h6" color="textSecondary">
-      all done for today!
-    </Typography>
-  )}
-</Box>
+        <Box display="flex" justifyContent="space-between" alignItems="center" my={2}>
+            <AddTask onAddTask={addNewTask} />
+            <ToggleTimeCategory view={categoryView} onToggleView={toggleView} />
+        </Box>
+        <DateWelcome />
+        <Box my={4} display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+            {tasks.length > 0 ? (
+                <StickyNote tasks={tasks} toggleCompletion={toggleCompletion} removeTask={removeTask} />
+            ) : (
+                <Typography variant="h6" color="textSecondary">
+                    all done for today!
+                </Typography>
+            )}
+        </Box>
     </Container>
-  );
+);
 };
 
 export default Nudge;
