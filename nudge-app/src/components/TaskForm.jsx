@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -26,13 +27,18 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
 
 
   const handleSubmit = async (e) => {
+
+    console.log('Form submitted at ' + Date.now());
+
     e.preventDefault();
     const taskData = {
       userId: localStorage.getItem('userId'),
       name: taskDetails.taskName,
       description: taskDetails.description,
+
       date: taskDetails.date.toISOString().split('T')[0],
       time: taskDetails.time.toTimeString().split(' ')[0],
+      priority: taskDetails.priority,
       location: taskDetails.location,
       priority: taskDetails.priority,
       completed: false
@@ -40,6 +46,18 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
     addNewTask(taskData);
     handleClose();
   };
+
+    // clear task details
+    setTaskDetails({
+      taskName: '',
+      time: '',
+      date: '',
+      location: '',
+      priority: false,
+      description: ''
+    });
+};
+
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -56,6 +74,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
             value={taskDetails.taskName}
             onChange={handleChange}
           />
+
      <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Date"
@@ -74,6 +93,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
               renderInput={(params) => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
+
           <TextField
             margin="dense"
             name="location"
