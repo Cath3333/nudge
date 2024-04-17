@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
+import { Button, TextField, DateTimePicker, DatePicker, TimePicker, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
 //TODO: add categories field where the user can select from PREEXISTING categories (e.g. academics)
 
 const TaskForm = ({ open, handleClose, addNewTask }) => {
   const [taskDetails, setTaskDetails] = useState({
     taskName: '',
-    time: '',
-    date: '',
+    datetime: dayjs('2000-01-01T00:00'),
     location: '',
     priority: false,
     description: ''
@@ -27,8 +26,9 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
       userId: localStorage.getItem('userId'), 
       name: taskDetails.taskName, 
       description: taskDetails.description,
-      date: taskDetails.date,
-      time: taskDetails.time,
+      // date: taskDetails.date,
+      // time: taskDetails.time,
+      datetime: taskDetails.datetime,
       priority: taskDetails.priority,
       location: taskDetails.location,
       completed: false
@@ -65,26 +65,24 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
             value={taskDetails.taskName}
             onChange={handleChange}
           />
-          <TextField
-            margin="dense"
-            name="time"
-            label="Time"
-            type="text"
-            fullWidth
-            value={taskDetails.time}
-            onChange={handleChange}
-            placeholder="08:00 AM"
-          />
-          <TextField
+          <DateTimePicker
+          label="Due Date & Time"
+          value={taskDetails.datetime}
+          onChange={handleChange}
+        />
+          {/* <DatePicker
             margin="dense"
             name="date"
-            label="Date"
-            type="text"
+            label="Due Date" 
             fullWidth
             value={taskDetails.date}
             onChange={handleChange}
-            placeholder="12/25/2024"
           />
+          <TimePicker 
+          label="Time" 
+          value={taskDetails.time}
+          onChange={handleChange}
+          /> */}
           <TextField
             margin="dense"
             name="location"

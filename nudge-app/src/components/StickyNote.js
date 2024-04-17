@@ -11,7 +11,7 @@ const StickyNote = ({ tasks, toggleCompletion, removeTask }) => {
     const borderColor = `conic-gradient(from 0deg at 0% -1%, magenta  ${90 + 90 * completionRatio}deg, ${bgColor}  ${90 + 100 * completionRatio}deg)`; // This will determine the fill of the border
 
     return (
-        <Paper elevation={3} style={{ padding: '15px', margin: '10px', backgroundColor: '#ffff99', border: `4px solid ${borderColor}` }}>
+        <Paper elevation={3} style={{ padding: '15px', margin: '10px', backgroundColor: bgColor, border: `4px solid ${bgColor}`, borderImage: `${borderColor} 1`}}>
             {tasks.map((task, index) => (
                 <div key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ opacity: task.completed ? 0.3 : 1, flex: 1 }}>
@@ -26,8 +26,9 @@ const StickyNote = ({ tasks, toggleCompletion, removeTask }) => {
                             label={
                                 <div style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
                                     <Typography variant="h6">{task.taskName}</Typography>
-                                    <Typography>Time: {task.time}</Typography>
-                                    <Typography>Date: {task.date}</Typography>
+                                    {/* <Typography>Time: {task.time}</Typography>
+                                    <Typography>Date: {task.date}</Typography> */}
+                                    <Typography> Date & Time: {task.datetime}</Typography>
                                     <Typography>Location: {task.location}</Typography>
                                     <Typography>Priority: {task.priority ? 'High' : 'Normal'}</Typography>
                                     <Typography>Description: {task.description}</Typography>
