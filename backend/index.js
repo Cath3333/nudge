@@ -70,14 +70,14 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/add-task', async (req, res) => {
-  const { userId, name, description, date, time, priority, location } = req.body;
+  const { userId, name, description, datetime, priority, location } = req.body;
 
-  if (!userId || !name || !date || !time || !priority) {
+  if (!userId || !name || !datetime || !priority) {
       return res.status(400).json({ message: "Missing required fields" });
   }
 
   try {
-      const result = await database.insertTaskData(userId, name, description, date, time, priority, location);
+      const result = await database.insertTaskData(userId, name, description, datetime.toDate(), priority, location);
       res.status(201).json({ message: "Task successfully added", insertedId: result.insertedId });
   } catch (error) {
       console.error('Error adding task:', error);
@@ -85,6 +85,21 @@ app.post('/add-task', async (req, res) => {
   }
 });
 
+app.post('complete-task', async (req, res) => {
+  const {taskId} = req.body;
+  if (!taskId) {
+    return res.status(400).json({ message: "Missing task id" });
+  }
+
+  try {
+
+  } catch (error) {
+      console.error('Error adding task:', error);
+      res.status(500).json({ error: "Failed to add task." });
+  }
+
+
+});
 
 
 
@@ -98,6 +113,32 @@ app.get('/accounts-data', async (_req, res) => {
     res.status(500).send('Failed to insert sample data', error);
   }
 });
+
+app.get('/analytics', async (_req, res) => {
+  try {
+    //analytics: (1) 
+    //1. high traffic days when assignments are due so users can plan ahead
+    // 2. count items user have completed over a time period (heatmap like github contributions)
+
+    //notes: heat map for task due (high traffic days) and completed tasks 
+    //general analytics dashboard for items compelte rate (on time) over the past week, number of urgent items
+
+    // const data = await database.fetchAccountData(); 
+    // res.json(data);
+    // format: [category: {}, category: {}, category: {}]
+
+    //without datatype processing : just split by '/', dd/mm/yyyy (note format) --> kinda annoying to aggregate
+
+    //two functions: #1. fetch high traffic days for (1) future (2) completed (take in a param of type)
+    // #2. general statistics (complete rate, etc) (need multiple queries, one for each item)
+ 
+    //data: when check box (complete a task), update the 'compelte time' field in the database
+    
+  } catch (error) {
+    console.error('Error inserting sample data:', error);
+    res.status(500).send('Failed to insert sample data', error);
+  }
+})
 
 
 app.use(express.static(path.join(__dirname, '../zuss-app/build')));

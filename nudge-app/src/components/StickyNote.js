@@ -22,8 +22,9 @@ const StickyNote = ({ tasks, toggleCompletion, removeTask }) => {
                             label={
                                 <div style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
                                     <Typography variant="h6">{task.taskName}</Typography>
-                                    <Typography>Time: {task.time}</Typography>
-                                    <Typography>Date: {task.date}</Typography>
+                                    {/* <Typography>Time: {task.time}</Typography>
+                                    <Typography>Date: {task.date}</Typography> */}
+                                    <Typography> Date & Time: {task.datetime}</Typography>
                                     <Typography>Location: {task.location}</Typography>
                                     <Typography>Priority: {task.priority ? 'High' : 'Normal'}</Typography>
                                     <Typography>Description: {task.description}</Typography>
