@@ -1,0 +1,12 @@
+.react-datepicker-wrapper {
+  width: 100%; /* Full width of its parent */
+}
+
+.react-datepicker-popper {
+  z-index: 9999 !important; /* High z-index to ensure it's on top of other elements */
+}
+
+/* Optional: Adjust the position of the date picker if needed */
+.react-datepicker-popper[data-placement^="bottom"] {
+  top: 0px !important; /* Adjust this value if needed */
+}

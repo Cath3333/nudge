@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
-//TODO: add categories field where the user can select from PREEXISTING categories (e.g. academics)
+import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import './TaskForm.css';
+
 const TaskForm = ({ open, handleClose, addNewTask }) => {
   const [taskDetails, setTaskDetails] = useState({
     taskName: '',
-    time: '',
-    date: '',
+    date: new Date(),
+    time: new Date(),
     location: '',
     priority: false,
     description: ''
@@ -19,25 +23,23 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
     });
   };
 
+
+
   const handleSubmit = async (e) => {
-    console.log('Form submitted');
     e.preventDefault();
-    const taskData = { 
-      userId: localStorage.getItem('userId'), 
-      name: taskDetails.taskName, 
+    const taskData = {
+      userId: localStorage.getItem('userId'),
+      name: taskDetails.taskName,
       description: taskDetails.description,
-      date: taskDetails.date,
-      time: taskDetails.time,
-      priority: taskDetails.priority,
+      date: taskDetails.date.toISOString().split('T')[0],
+      time: taskDetails.time.toTimeString().split(' ')[0],
       location: taskDetails.location,
+      priority: taskDetails.priority,
       completed: false
-      
     };
     addNewTask(taskData);
-    console.log(taskData);
     handleClose();
-};
-
+  };
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -54,26 +56,24 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
             value={taskDetails.taskName}
             onChange={handleChange}
           />
-          <TextField
-            margin="dense"
-            name="time"
-            label="Time"
-            type="text"
-            fullWidth
-            value={taskDetails.time}
-            onChange={handleChange}
-            placeholder="08:00 AM"
-          />
-          <TextField
-            margin="dense"
-            name="date"
-            label="Date"
-            type="text"
-            fullWidth
-            value={taskDetails.date}
-            onChange={handleChange}
-            placeholder="12/25/2024"
-          />
+     <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Date"
+              value={taskDetails.date}
+              onChange={(newValue) => {
+                setTaskDetails({ ...taskDetails, date: newValue });
+              }}
+              renderInput={(params) => <TextField {...params} fullWidth />}
+            />
+            <TimePicker
+              label="Time"
+              value={taskDetails.time}
+              onChange={(newValue) => {
+                setTaskDetails({ ...taskDetails, time: newValue });
+              }}
+              renderInput={(params) => <TextField {...params} fullWidth />}
+            />
+          </LocalizationProvider>
           <TextField
             margin="dense"
             name="location"
@@ -84,13 +84,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
             onChange={handleChange}
           />
           <FormControlLabel
-            control={
-              <Checkbox
-                name="priority"
-                checked={taskDetails.priority}
-                onChange={handleChange}
-              />
-            }
+            control={<Checkbox name="priority" checked={taskDetails.priority} onChange={handleChange} />}
             label="Priority"
           />
           <TextField
