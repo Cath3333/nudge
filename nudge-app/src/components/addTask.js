@@ -7,6 +7,7 @@ const AddTask = ({onAddTask}) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
+    console.log("Opening task form at " + Date.now());
     setOpen(true);
   };
 

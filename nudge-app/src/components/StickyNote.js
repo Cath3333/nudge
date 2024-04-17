@@ -4,7 +4,11 @@ import { Paper, Typography, Checkbox, FormControlLabel, Button } from '@mui/mate
 const StickyNote = ({ tasks, toggleCompletion, removeTask }) => {
     const completedTasksCount = tasks.filter(task => task.completed).length;
     const totalTasksCount = tasks.length;
-    const borderColor = `rgba(0, 0, 0, ${completedTasksCount / totalTasksCount})`; // This will determine the fill of the border
+    const bgColor = '#ffff99';
+    const completionRatio = completedTasksCount / totalTasksCount // * 100;
+    // console.log(completionRatio)
+    // keep values between 90 and 180 degrees
+    const borderColor = `conic-gradient(from 0deg at 0% -1%, magenta  ${90 + 90 * completionRatio}deg, ${bgColor}  ${90 + 100 * completionRatio}deg)`; // This will determine the fill of the border
 
     return (
         <Paper elevation={3} style={{ padding: '15px', margin: '10px', backgroundColor: '#ffff99', border: `4px solid ${borderColor}` }}>

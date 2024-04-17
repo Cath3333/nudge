@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
 //TODO: add categories field where the user can select from PREEXISTING categories (e.g. academics)
+
 const TaskForm = ({ open, handleClose, addNewTask }) => {
   const [taskDetails, setTaskDetails] = useState({
     taskName: '',
@@ -20,7 +21,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
   };
 
   const handleSubmit = async (e) => {
-    console.log('Form submitted');
+    console.log('Form submitted at ' + Date.now());
     e.preventDefault();
     const taskData = { 
       userId: localStorage.getItem('userId'), 
@@ -36,6 +37,16 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
     addNewTask(taskData);
     console.log(taskData);
     handleClose();
+
+    // clear task details
+    setTaskDetails({
+      taskName: '',
+      time: '',
+      date: '',
+      location: '',
+      priority: false,
+      description: ''
+    });
 };
 
 
