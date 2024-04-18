@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import './TaskForm.css';
 
+
 const TaskForm = ({ open, handleClose, addNewTask }) => {
   const [taskDetails, setTaskDetails] = useState({
     taskName: '',
+
     date: new Date(),
     time: new Date(),
+
     location: '',
     priority: false,
     description: ''
@@ -26,20 +30,38 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
 
 
   const handleSubmit = async (e) => {
+
+    console.log('Form submitted at ' + Date.now());
+
     e.preventDefault();
     const taskData = {
       userId: localStorage.getItem('userId'),
       name: taskDetails.taskName,
       description: taskDetails.description,
+
       date: taskDetails.date.toISOString().split('T')[0],
       time: taskDetails.time.toTimeString().split(' ')[0],
+
       location: taskDetails.location,
       priority: taskDetails.priority,
       completed: false
     };
     addNewTask(taskData);
     handleClose();
-  };
+
+
+    // clear task details
+    setTaskDetails({
+      taskName: '',
+      time: '',
+      date: '',
+      location: '',
+      priority: false,
+      description: ''
+    });
+};
+
+
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -56,6 +78,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
             value={taskDetails.taskName}
             onChange={handleChange}
           />
+
      <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Date"
@@ -74,6 +97,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
               renderInput={(params) => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
+
           <TextField
             margin="dense"
             name="location"
