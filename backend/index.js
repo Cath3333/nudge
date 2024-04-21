@@ -77,7 +77,7 @@ app.post('/add-task', async (req, res) => {
   }
 
   try {
-      const result = await database.insertTaskData(userId, name, description, datetime.toDate(), priority, location);
+      const result = await database.insertTaskData(userId, name, description, datetime, priority, location);
       res.status(201).json({ message: "Task successfully added", insertedId: result.insertedId });
   } catch (error) {
       console.error('Error adding task:', error);
