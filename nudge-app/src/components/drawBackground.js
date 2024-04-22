@@ -92,6 +92,17 @@ function DrawCanvas({image, setImage}) {
     };
     useEffect(checkContext, [canvasRef, setCtx]); // renders as soon as DrawForm is in DrawBackground (before open is true)
 
+    const saveImage = () => {
+        const dataURL = canvasRef.current.toDataURL("img/jpeg");
+        setImage("url(" + dataURL + ")");
+        // // window.open(dataURL, '_blank');
+        // const link = document.createElement('a');
+        // link.href = dataURL;
+        // // set download attribute and triger click event to initiate download
+        // link.download = 'canvas_image.png';
+        // link.click();
+    }
+
     return (
         <>
         <div id="canvasHeader">
@@ -101,7 +112,7 @@ function DrawCanvas({image, setImage}) {
             <button id="eraseButton" onClick={() => setErase(!erase)} className={erase ? 'clicked' : ''}>Erase</button>
             <button id="clearButton" onClick={handleClear}>Clear All</button>
             </div>
-            <Button variant="contained">Save</Button>
+            <Button variant="contained" onClick={saveImage}>Save</Button>
         </div>
         <canvas id="canvasElement" style= {{border: "1px solid black" }} ref={canvasRef}
         onMouseDown={(e) => handleDrawDown(e)} onMouseMove={(e) => handleDrawMove(e)} onMouseUp={handleDrawUp}>hello?</canvas>
