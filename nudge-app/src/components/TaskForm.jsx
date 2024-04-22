@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Checkbox, FormControlLabel } from '@mui/material';
-import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { DateTimePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import './TaskForm.css';
@@ -11,8 +11,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
   const [taskDetails, setTaskDetails] = useState({
     taskName: '',
 
-    date: new Date(),
-    time: new Date(),
+    datetime: new Date(),
 
     location: '',
     priority: false,
@@ -27,7 +26,15 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
     });
   };
 
-
+  // Reset date and time fields when form is opened
+  useEffect(() => {
+    if (open) {
+      setTaskDetails({
+        ...taskDetails,
+        datetime: new Date() // Set default value to current date and time
+      });
+    }
+  }, [open]);
 
   const handleSubmit = async (e) => {
 
@@ -39,8 +46,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
       name: taskDetails.taskName,
       description: taskDetails.description,
 
-      date: taskDetails.date.toISOString().split('T')[0],
-      time: taskDetails.time.toTimeString().split(' ')[0],
+      datetime: taskDetails.datetime,
 
       location: taskDetails.location,
       priority: taskDetails.priority,
@@ -53,8 +59,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
     // clear task details
     setTaskDetails({
       taskName: '',
-      time: '',
-      date: '',
+      datetime: new Date(),
       location: '',
       priority: false,
       description: ''
@@ -79,22 +84,16 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
             onChange={handleChange}
           />
 
-     <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Date"
-              value={taskDetails.date}
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              label="Date & Time"
+              // views={['year', 'month', 'day', 'hours', 'minutes']}
+              value={taskDetails.datetime}
               onChange={(newValue) => {
-                setTaskDetails({ ...taskDetails, date: newValue });
+                setTaskDetails({ ...taskDetails, datetime: newValue });
               }}
               renderInput={(params) => <TextField {...params} fullWidth />}
-            />
-            <TimePicker
-              label="Time"
-              value={taskDetails.time}
-              onChange={(newValue) => {
-                setTaskDetails({ ...taskDetails, time: newValue });
-              }}
-              renderInput={(params) => <TextField {...params} fullWidth />}
+              sx={{ margin: '1rem 0'}}
             />
           </LocalizationProvider>
 

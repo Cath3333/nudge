@@ -9,6 +9,16 @@ const StickyNote = ({ tasks, toggleCompletion, removeTask }) => {
     // console.log(completionRatio)
     // keep values between 90 and 180 degrees
     const borderColor = `conic-gradient(from 0deg at 0% -1%, magenta  ${90 + 90 * completionRatio}deg, ${bgColor}  ${90 + 100 * completionRatio}deg)`; // This will determine the fill of the border
+    console.log(tasks)
+    const dateOptions = {
+        weekday: 'short',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      };
 
     return (
         <Paper elevation={3} style={{ padding: '15px', margin: '10px', backgroundColor: bgColor, border: `4px solid ${bgColor}`, borderImage: `${borderColor} 1`}}>
@@ -28,7 +38,7 @@ const StickyNote = ({ tasks, toggleCompletion, removeTask }) => {
                                     <Typography variant="h6">{task.taskName}</Typography>
                                     {/* <Typography>Time: {task.time}</Typography>
                                     <Typography>Date: {task.date}</Typography> */}
-                                    <Typography> Date & Time: {task.datetime}</Typography>
+                                    <Typography> Date & Time: {task.datetime.toLocaleString(undefined, dateOptions)}</Typography>
                                     <Typography>Location: {task.location}</Typography>
                                     <Typography>Priority: {task.priority ? 'High' : 'Normal'}</Typography>
                                     <Typography>Description: {task.description}</Typography>

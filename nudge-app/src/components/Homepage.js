@@ -41,7 +41,7 @@ const Nudge = () => {
     setTasks(tasks.filter((_, i) => i !== index));  // Remove task by index
 };
 
-//TODO: make this change reflect the ordering/display of tasks
+// Change Background Overlay
   const toggleView = () => {
     setCategoryView(!categoryView);
   };
