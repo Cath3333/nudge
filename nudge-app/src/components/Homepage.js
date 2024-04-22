@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography } from '@mui/material';
 import AddTask from './addTask.js';
 import DateWelcome from './date.js';
-import ToggleTimeCategory from './categoriesTime.js';
+import EditBackground from './editBackground.js';
 import StickyNote from './StickyNote.js';
 
 //TODO: connect to database (don't need to worry about this for hw 5)
 const Nudge = () => {
   const [tasks, setTasks] = useState([]);
-  const [categoryView, setCategoryView] = useState(true);
+  const [backgroundImage, setBackgroundImage] = useState('url(blob:http://localhost:3000/ddfaac09-a0fd-4f44-a0ce-1cafadd1cf78)')
+  // useState('linear-gradient(red, blue, yellow)');
 
   const addNewTask = async (newTask) => {
     try {
@@ -39,22 +40,22 @@ const Nudge = () => {
 
   const removeTask = (index) => {
     setTasks(tasks.filter((_, i) => i !== index));  // Remove task by index
-};
-
-//TODO: make this change reflect the ordering/display of tasks
-  const toggleView = () => {
-    setCategoryView(!categoryView);
   };
+
+  useEffect(() => {
+    console.log("Setting background image to", backgroundImage)
+  }, [backgroundImage]);
 
   //TODO: allow user to check off tasks (need some way to decrease tasks.length)
   return (
-    <Container>
+    <Container >
         <Box display="flex" justifyContent="space-between" alignItems="center" my={2}>
             <AddTask onAddTask={addNewTask} />
-            <ToggleTimeCategory view={categoryView} onToggleView={toggleView} />
+            <EditBackground image={backgroundImage} setImage={setBackgroundImage}/>
         </Box>
         <DateWelcome />
-        <Box my={4} display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+        <Box my={4} display="flex" justifyContent="center" alignItems="center" minHeight="200px"
+        style={{backgroundImage:backgroundImage, backgroundSize:'100%'}}>
             {tasks.length > 0 ? (
                 <StickyNote tasks={tasks} toggleCompletion={toggleCompletion} removeTask={removeTask} />
             ) : (
