@@ -57,3 +57,22 @@
 .task-time {
   color: blue;
 }
+
+#canvasHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#tools {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 1rem;
+  margin: 1rem;
+}
+
+canvas { /* changes the style sizing, not the actual canvas size */
+  height: 75vh;
+  width: 75vw;
+}

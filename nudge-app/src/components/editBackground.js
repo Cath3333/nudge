@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
 import { Button, Dialog } from '@mui/material';
+import DrawBackground from './drawBackground.js';
 
 const BackgroundForm = ({ open, handleClose, image, setImage }) => {
 
@@ -13,8 +14,10 @@ const BackgroundForm = ({ open, handleClose, image, setImage }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <div className="BackgroundForm" style={{margin:20}}>
-          <h2>Add Image:</h2>
+          <h2>Upload Image:</h2>
           <input type="file" onChange={handleChange} />
+          <h2>Or Draw:</h2>
+          <DrawBackground image={image} setImage={setImage}/>
       </div>
     </Dialog>
       

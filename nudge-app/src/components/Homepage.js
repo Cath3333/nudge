@@ -8,8 +8,7 @@ import StickyNote from './StickyNote.js';
 //TODO: connect to database (don't need to worry about this for hw 5)
 const Nudge = () => {
   const [tasks, setTasks] = useState([]);
-  const [backgroundImage, setBackgroundImage] = useState('url(blob:http://localhost:3000/ddfaac09-a0fd-4f44-a0ce-1cafadd1cf78)')
-  // useState('linear-gradient(red, blue, yellow)');
+  const [backgroundImage, setBackgroundImage] = useState('linear-gradient(red, blue, red)');
 
   const addNewTask = async (newTask) => {
     try {
