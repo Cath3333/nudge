@@ -5,58 +5,78 @@ import DateWelcome from './date.js';
 import EditBackground from './editBackground.js';
 import StickyNote from './StickyNote.js';
 
-//TODO: connect to database (don't need to worry about this for hw 5)
 const Nudge = () => {
   const [tasks, setTasks] = useState([]);
-  const [backgroundImage, setBackgroundImage] = useState('linear-gradient(red, blue, red)');
+  const [backgroundImage, setBackgroundImage] = useState('linear-gradient(blue, white, blue)');
+
+  
+  const groupedTasks = tasks.reduce((acc, task) => {
+    const date = task.datetime.toISOString().split('T')[0]; 
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(task);
+    return acc;
+  }, {});
+  //group tasks by date keys
+  const dates = Object.keys(groupedTasks).sort();
 
   const addNewTask = async (newTask) => {
     try {
-        const response = await fetch('http://localhost:8000/add-task', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newTask),
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.message);
-        setTasks([...tasks, { ...newTask, id: data.insertedId }]); 
-        console.log("Adding new task:", newTask); 
+      const response = await fetch('http://localhost:8000/add-task', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newTask),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      setTasks([...tasks, { ...newTask, id: data.insertedId }]); // Ensure data.insertedId is provided by your backend
     } catch (error) {
-        console.error('Failed to add new task:', error);
+      console.error('Failed to add new task:', error);
     }
-};
-  const toggleCompletion = (index) => {
-    const updatedTasks = tasks.map((task, taskIndex) => {
-      if (taskIndex === index) {
+  };
+  const toggleCompletion = (taskId) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === taskId) {
         return { ...task, completed: !task.completed };
       }
       return task;
     });
     setTasks(updatedTasks);
   };
-
-  const removeTask = (index) => {
-    setTasks(tasks.filter((_, i) => i !== index));  // Remove task by index
+  
+  const removeTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
   };
+  
 
   useEffect(() => {
     console.log("Setting background image to", backgroundImage)
   }, [backgroundImage]);
 
-  //TODO: allow user to check off tasks (need some way to decrease tasks.length)
+  
   return (
-    <Container >
+    <Container style={{ backgroundColor: '#F8F1E7', minHeight: '100vh' }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" my={2}>
             <AddTask onAddTask={addNewTask} />
             <EditBackground image={backgroundImage} setImage={setBackgroundImage}/>
         </Box>
         <DateWelcome />
-        <Box my={4} display="flex" justifyContent="center" alignItems="center" minHeight="200px"
+        <Box my={4} display="flex" flexDirection="column" alignItems="center" gap="20px"
         style={{backgroundImage:backgroundImage, backgroundSize:'100%'}}>
-            {tasks.length > 0 ? (
-                <StickyNote tasks={tasks} toggleCompletion={toggleCompletion} removeTask={removeTask} />
+            {dates.length > 0 ? (
+          dates.map((date, index) => (
+            <StickyNote
+              key={date}
+              date={date}
+              index={index}
+              tasks={groupedTasks[date]}
+              toggleCompletion={toggleCompletion}
+              removeTask={removeTask}
+            />
+          ))
             ) : (
                 <Typography variant="h6" color="textSecondary">
                     all done for today!

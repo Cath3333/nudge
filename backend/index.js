@@ -72,8 +72,8 @@ app.post('/login', async (req, res) => {
 app.post('/add-task', async (req, res) => {
   const { userId, name, description, datetime, priority, location } = req.body;
 
-  if (!userId || !name || !datetime || !priority) {
-      return res.status(400).json({ message: "Missing required fields" });
+  if (!userId || !name) {
+      return res.status(400).json({ message: "Missing required fields: userId and name are required." });
   }
 
   try {
