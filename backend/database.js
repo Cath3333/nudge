@@ -58,7 +58,7 @@ async function insertAccountData(user, pass) {
 }
 
 
-async function insertTaskData(userId, name, description, date, time, priority, location, completed = false) {
+async function insertTaskData(userId, name, description = null, datetime = null, priority = false, location = null, completed = false) {
     const db = await connect();
     const collection = db.collection('TasksCollection');
 
@@ -68,8 +68,7 @@ async function insertTaskData(userId, name, description, date, time, priority, l
             user_id: userId,
             name: name,
             desc: description,
-            date: date,
-            time: time,
+            date: datetime,
             priority: priority,
             location: location,
             completed: completed,

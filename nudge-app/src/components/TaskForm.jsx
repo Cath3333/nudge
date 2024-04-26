@@ -26,13 +26,27 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
     });
   };
 
+  const handleCloseAndReset = () => {
+    // Call the original handleClose function passed via props
+    handleClose();
+  
+    // Reset the task details
+    setTaskDetails({
+      taskName: '',
+      datetime: new Date(),
+      location: '',
+      priority: false,
+      description: ''
+    });
+  };
+
   // Reset date and time fields when form is opened
   useEffect(() => {
     if (open) {
-      setTaskDetails({
-        ...taskDetails,
+      setTaskDetails(prevDetails => ({
+        ...prevDetails,
         datetime: new Date() // Set default value to current date and time
-      });
+      }));
     }
   }, [open]);
 
@@ -41,19 +55,23 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
     console.log('Form submitted at ' + Date.now());
 
     e.preventDefault();
+    if (!taskDetails.taskName.trim()) {
+      alert("Please enter a task name.");
+      return;
+    }
     const taskData = {
       userId: localStorage.getItem('userId'),
-      name: taskDetails.taskName,
-      description: taskDetails.description,
+      name: taskDetails.taskName || "",
+      description: taskDetails.description || "",
 
       datetime: taskDetails.datetime,
 
-      location: taskDetails.location,
-      priority: taskDetails.priority,
+      location: taskDetails.location || "",
+      priority: taskDetails.priority || false,
       completed: false
     };
     addNewTask(taskData);
-    handleClose();
+    handleCloseAndReset();
 
 
     // clear task details
@@ -69,7 +87,7 @@ const TaskForm = ({ open, handleClose, addNewTask }) => {
 
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleCloseAndReset}>
       <DialogTitle>Add New Task</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>

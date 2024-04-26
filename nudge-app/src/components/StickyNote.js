@@ -1,53 +1,41 @@
 import React from 'react';
 import { Paper, Typography, Checkbox, FormControlLabel, Button } from '@mui/material';
 
-const StickyNote = ({ tasks, toggleCompletion, removeTask }) => {
+const colors = ['#92ADDC', '#DBE5F3', '#FCB8AB', '#F9BEC2', '#FAE3C3'];
+
+const StickyNote = ({ tasks, index, toggleCompletion, removeTask }) => {
     const completedTasksCount = tasks.filter(task => task.completed).length;
     const totalTasksCount = tasks.length;
-    const bgColor = '#ffff99';
-    const completionRatio = completedTasksCount / totalTasksCount // * 100;
-    // console.log(completionRatio)
-    // keep values between 90 and 180 degrees
-    const borderColor = `conic-gradient(from 0deg at 0% -1%, magenta  ${90 + 90 * completionRatio}deg, ${bgColor}  ${90 + 100 * completionRatio}deg)`; // This will determine the fill of the border
-    console.log(tasks)
-    const dateOptions = {
-        weekday: 'short',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZoneName: 'short'
-      };
+    const completionRatio = completedTasksCount / totalTasksCount; 
+    const borderColor = `conic-gradient(from 0deg at 0% -1%, magenta ${90 + 90 * completionRatio}deg, ${colors[index % colors.length]} ${90 + 100 * completionRatio}deg)`;
+    const bgColor = colors[index % colors.length];
 
     return (
-        <Paper elevation={3} style={{ padding: '15px', margin: '10px', backgroundColor: bgColor, border: `4px solid ${bgColor}`, borderImage: `${borderColor} 1`}}>
-            {tasks.map((task, index) => (
-                <div key={index} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ opacity: task.completed ? 0.3 : 1, flex: 1 }}>
-                        <FormControlLabel
-                            control={
-                                <Checkbox 
-                                    checked={task.completed}
-                                    onChange={() => toggleCompletion(index)}
-                                    disabled={task.completed}
-                                />
-                            }
-                            label={
-                                <div style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
-                                    <Typography variant="h6">{task.taskName}</Typography>
-                                    {/* <Typography>Time: {task.time}</Typography>
-                                    <Typography>Date: {task.date}</Typography> */}
-                                    <Typography>{task.datetime.toLocaleString(undefined, dateOptions)}</Typography>
-                                    <Typography>Location: {task.location}</Typography>
-                                    <Typography>Priority: {task.priority ? 'High' : 'Normal'}</Typography>
-                                    <Typography>Description: {task.description}</Typography>
-                                </div>
-                            }
-                        />
-                    </div>
-                    <Button onClick={() => removeTask(index)} color="secondary" style={{ marginLeft: '10px' }}>Remove</Button>
-                    {index < tasks.length - 1 && <hr />}
+        <Paper elevation={3} style={{ padding: '15px', margin: '10px', backgroundColor: bgColor, border: `4px solid ${bgColor}`,
+        borderImage: `${borderColor} 1`, boxShadow: '5px 5px 15px rgba(0,0,0,0.3)'}}>
+            {tasks.map((task) => (
+                <div key={task.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox 
+                                checked={task.completed}
+                                onChange={() => toggleCompletion(task.id)}
+                                disabled={task.completed}
+                            />
+                        }
+                        label={
+                            <div style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+                                <Typography variant="h6">{task.name}</Typography>
+                                {task.datetime && (
+                                    <Typography>Date & Time: {new Date(task.datetime).toLocaleString()}</Typography>
+                                )}
+                                {task.location && <Typography>Location: {task.location}</Typography>}
+                                {task.priority && <Typography>Priority: {task.priority ? 'High' : 'Normal'}</Typography>}
+                                {task.description && <Typography>Description: {task.description}</Typography>}
+                            </div>
+                        }
+                    />
+                    <Button onClick={() => removeTask(task.id)} color="secondary" style={{ marginLeft: '10px' }}>Remove</Button>
                 </div>
             ))}
         </Paper>
