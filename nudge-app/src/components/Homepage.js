@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { Container, Box, Button, Typography } from '@mui/material';
+import { Container, Box, Button, Typography, AppBar, Toolbar, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
 import StickyNote from './StickyNote';
 
 const Nudge = () => {
     const [tasks, setTasks] = useState([]);
     const [isEditMode, setIsEditMode] = useState({});
+    const navigate = useNavigate();
 
     const addNewTask = () => {
         const newTask = { id: Date.now(), name: '', datetime: '', location: '', description: '', completed: false, priority: false };
@@ -26,15 +29,28 @@ const Nudge = () => {
         setTasks(tasks.filter(task => task.id !== id));
     };
 
+    const handleLogout = () => {
+        navigate('/login');
+    };
+
     const today = new Date();
 
     return (
         <Container>
-            <Box display="flex" justifyContent="space-between" alignItems="center" my={2}>
-                <Typography variant="h4">Welcome! Today is {today.toLocaleDateString()}</Typography>
-                <Button startIcon={<AddIcon />} onClick={addNewTask} variant="contained" color="primary">Add Task</Button>
-                <Button onClick={() => { /* Implement logout logic here */ }} color="inherit">Logout</Button>
-            </Box>
+            <AppBar position="static" color="default" elevation={0}>
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" onClick={addNewTask}>
+                        <AddIcon />
+                    </IconButton>
+                    <Typography variant="h6" style={{ flexGrow: 1, textAlign: 'center' }}>
+                        Welcome!<br/>
+                        <span style={{ fontSize: 16, color: '#666' }}>{today.toLocaleDateString()}</span>
+                    </Typography>
+                    <IconButton edge="end" color="inherit" onClick={handleLogout}>
+                        <LogoutIcon />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
             <Box my={4} display="flex" flexDirection="column" alignItems="center" gap="20px">
                 {tasks.map((task, index) => (
                     <StickyNote
