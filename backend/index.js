@@ -125,6 +125,7 @@ app.get('/analytics', async (_req, res) => {
 
     // const data = await database.fetchAccountData(); 
     // res.json(data);
+    // console.log(data)
     // format: [category: {}, category: {}, category: {}]
 
     //without datatype processing : just split by '/', dd/mm/yyyy (note format) --> kinda annoying to aggregate
