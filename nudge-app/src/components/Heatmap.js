@@ -103,7 +103,7 @@ const Heatmap = ({tasks, isEditMode}) => {
       </div>
       <div>{done && (
             <Box fontWeight={'bold'}>
-                <div style={{ backgroundColor: '#f0f0f0', padding: '0 20px', borderRadius: '5px', display: 'inline-block'}}>
+                <div style={{ backgroundColor: '#f0f0f0', marginBottom: '10px', padding: '0 20px', borderRadius: '5px', display: 'inline-block'}}>
                 <p>Great job! You've completed all your tasks for today!</p>
                 </div>
             </Box>
@@ -112,7 +112,7 @@ const Heatmap = ({tasks, isEditMode}) => {
       <div>
       {maxDay.count > 3 && (
             <Box fontWeight={'bold'}>
-                <div style={{ backgroundColor: '#f0f0f0', padding: '0 20px', borderRadius: '5px', display: 'inline-block'}}>
+                <div style={{ backgroundColor: '#f0f0f0', marginBottom: '10px', padding: '0 20px', borderRadius: '5px', display: 'inline-block'}}>
                 <p>Hey, you have {maxDay.count} tasks scheduled for {maxDay.date}. Consider doing them on {minDay.date} instead?</p>
                 </div>
             </Box>
