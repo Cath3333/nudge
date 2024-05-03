@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import StickyNote from './StickyNote';
+import Heatmap from './Heatmap.js';
 
 const Nudge = () => {
     const [tasks, setTasks] = useState([]);
@@ -42,15 +43,18 @@ const Nudge = () => {
                     <IconButton edge="start" color="inherit" onClick={addNewTask}>
                         <AddIcon />
                     </IconButton>
-                    <Typography variant="h6" style={{ flexGrow: 1, textAlign: 'center' }}>
-                        Welcome!<br/>
-                        <span style={{ fontSize: 16, color: '#666' }}>{today.toLocaleDateString()}</span>
+                    <Typography variant="h6" style={{ flexGrow: 1, textAlign: 'center', marginTop: '12px', marginBottom: '4px', fontFamily: 'Lato, sans-serif', }}>
+                    <span style={{ fontWeight: 'bold' }}>Welcome!</span>
+                        <div style={{ fontSize: '16px', color: '#666', fontFamily: 'Lato, sans-serif' }}>
+                            {today.toLocaleDateString()}
+                        </div>
                     </Typography>
                     <IconButton edge="end" color="inherit" onClick={handleLogout}>
                         <LogoutIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>
+            <Heatmap tasks={tasks}/>
             <Box my={4} display="flex" flexDirection="column" alignItems="center" gap="20px">
                 {tasks.map((task, index) => (
                     <StickyNote
