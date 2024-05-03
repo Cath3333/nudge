@@ -6,7 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 const StickyNote = ({ task, toggleCompletion, removeTask, updateTask, index, isEditMode, setEditMode }) => {
     const colors = ['#92ADDC', '#DBE5F3', '#FCB8AB', '#F9BEC2', '#FAE3C3', '#CCE2CB'];
     const bgColor = colors[index % colors.length];
-    const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+    const dateOptions = { weekday: 'short', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 
     const handleEdit = () => setEditMode({ ...isEditMode, [task.id]: true });
     const handleDone = () => setEditMode({ ...isEditMode, [task.id]: false });
