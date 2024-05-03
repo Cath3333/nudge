@@ -6,6 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 const StickyNote = ({ task, toggleCompletion, removeTask, updateTask, index, isEditMode, setEditMode }) => {
     const colors = ['#92ADDC', '#DBE5F3', '#FCB8AB', '#F9BEC2', '#FAE3C3', '#CCE2CB'];
     const bgColor = colors[index % colors.length];
+    const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
 
     const handleEdit = () => setEditMode({ ...isEditMode, [task.id]: true });
     const handleDone = () => setEditMode({ ...isEditMode, [task.id]: false });
@@ -30,10 +31,10 @@ const StickyNote = ({ task, toggleCompletion, removeTask, updateTask, index, isE
                 </div>
             ) : (
                 <div>
-                    <Typography variant="h6">{task.name}</Typography>
-                    {task.datetime && <Typography>{new Date(task.datetime).toLocaleString()}</Typography>}
-                    {task.location && <Typography>{task.location}</Typography>}
-                    {task.description && <Typography>{task.description}</Typography>}
+                    <Typography variant="h6" fontFamily= 'DM Sans, sans-serif'>{task.name}</Typography>
+                    {task.datetime && <Typography fontFamily= 'DM Sans, sans-serif'>{new Date(task.datetime).toLocaleString('en-us', dateOptions)}</Typography>}
+                    {task.location && <Typography fontFamily= 'DM Sans, sans-serif'>{task.location}</Typography>}
+                    {task.description && <Typography fontFamily= 'DM Sans, sans-serif'>{task.description}</Typography>}
                     <FormControlLabel
                         control={<Checkbox checked={task.completed} onChange={() => toggleCompletion(task.id)} />}
                         label="Complete Task"

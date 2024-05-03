@@ -54,7 +54,7 @@ const Nudge = () => {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            <Heatmap tasks={tasks}/>
+            <Heatmap tasks={tasks} isEditMode={isEditMode}/>
             <Box my={4} display="flex" flexDirection="column" alignItems="center" gap="20px">
                 {tasks.map((task, index) => (
                     <StickyNote
